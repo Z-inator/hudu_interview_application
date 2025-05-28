@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hudu_interview_application/models/todo_model.dart';
 import 'package:hudu_interview_application/notifiers/todo_list.dart';
+import 'package:uuid/uuid.dart';
 
 class AddTaskButton extends StatelessWidget {
   const AddTaskButton({
@@ -43,8 +45,7 @@ class AddTaskButton extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       ref.read(todoListNotifierProvider.notifier).addTodo(
-                        titleController.text,
-                        descriptionController.text,
+                        Todo(id: Uuid().v4(), title: titleController.text, description: descriptionController.text)
                       );
                       Navigator.of(context).pop();
                     },

@@ -1,16 +1,26 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
+import 'package:hudu_interview_application/database/hive_registrar.g.dart';
+import 'package:hudu_interview_application/models/todo_model.dart';
 import 'package:hudu_interview_application/ui_elements/add_todo_button.dart';
 import 'package:hudu_interview_application/ui_elements/todo_list_ui.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapters();
+  await Hive.openBox<Todo>('todosBox');
+  Hive.box<Todo>('todosBox').listenable();
+  
   runApp(ProviderScope(child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

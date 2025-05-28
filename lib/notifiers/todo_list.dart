@@ -1,44 +1,42 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hudu_interview_application/models/todo.dart';
+import 'package:hive_ce/hive.dart';
+import 'package:hudu_interview_application/models/todo_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:uuid/uuid.dart';
 
 part 'todo_list.g.dart';
 
 @riverpod
 class TodoListNotifier extends _$TodoListNotifier {
   @override
-  // TODO: Pull from local storage (Hive) or remote API
-  // For now, we will generate a list of 10 todos for demonstration purposes.
-  // List<Todo> build() => ref.read(getTodoItemsProvider).value.items;
-  List<Todo> build() => state = List.generate(20, (index) {
-    return Todo(
-      id: const Uuid().v4(),
-      title: 'Todo $index',
-      description: 'Description for Todo $index',
-      isCompleted: index % 2 == 0, // Just for example, some todos are completed
-    );
-  });
+  List<Todo> build() => state = Hive.box<Todo>('todosBox').values.toList();
+  // List<Todo> build() => state = List.generate(20, (index) {
+  //   return Todo(
+  //     id: const Uuid().v4(),
+  //     title: 'Todo $index',
+  //     description: 'Description for Todo $index',
+  //     isCompleted: index % 2 == 0, // Just for example, some todos are completed
+  //   );
+  // });
 
-  void addTodo(String title, String description) {
+  void addTodo(Todo todo) {
     state = [
       ...state,
-      Todo(id: const Uuid().v4(), title: title, description: description),
+      todo,
     ];
+    Hive.box<Todo>('todosBox').add(todo);
   }
 
-  void removeTodo(String id) {
-    state = state.where((todo) => todo.id != id).toList();
+  void removeTodo(Todo todo) {
+    state.removeWhere((todoItem) => todoItem.id == todo.id);
+    Hive.box<Todo>('todosBox').delete(todo);
   }
 
-  void toggleTodoCompleted(String id) {
-    state = state.map((todo) {
-      if (todo.id == id) {
-        return todo.changeCompleted(todo);
+  void toggleTodoCompleted(Todo todo) {
+    state = state.map((todoItem) {
+      if (todoItem.id == todo.id) {
+        return todoItem.changeCompleted(todoItem);
       }
-      return todo;
+      return todoItem;
     }).toList();
+    todo.changeCompleted(todo).save();
   }
-
-  //Change to state saves to Hive
 }

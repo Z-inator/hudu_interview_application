@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hudu_interview_application/models/todo.dart';
+import 'package:hudu_interview_application/models/todo_model.dart';
 import 'package:hudu_interview_application/notifiers/todo_list.dart';
 
 Widget todoItem({required Todo todo}) {
@@ -12,7 +12,7 @@ Widget todoItem({required Todo todo}) {
           onChanged: (value) {
             ref
                 .read(todoListNotifierProvider.notifier)
-                .toggleTodoCompleted(todo.id);
+                .toggleTodoCompleted(todo);
           },
         ),
         title: Text(todo.title),
@@ -20,7 +20,7 @@ Widget todoItem({required Todo todo}) {
         trailing: IconButton(
           icon: const Icon(Icons.delete),
           onPressed: () {
-            ref.read(todoListNotifierProvider.notifier).removeTodo(todo.id);
+            ref.read(todoListNotifierProvider.notifier).removeTodo(todo);
           },
         ),
       );

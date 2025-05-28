@@ -1,4 +1,4 @@
-import 'package:hudu_interview_application/models/todo.dart';
+import 'package:hudu_interview_application/models/todo_model.dart';
 import 'package:hudu_interview_application/notifiers/todo_list.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 

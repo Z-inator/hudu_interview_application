@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hudu_interview_application/models/todo.dart';
+import 'package:hudu_interview_application/models/todo_model.dart';
 import 'package:hudu_interview_application/notifiers/todo_list.dart';
 import 'package:hudu_interview_application/notifiers/todo_list_filter_completed.dart';
 import 'package:hudu_interview_application/notifiers/todo_list_filter_not_completed.dart';
