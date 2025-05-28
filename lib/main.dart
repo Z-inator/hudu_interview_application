@@ -1,7 +1,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hive_ce/hive.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:hudu_interview_application/database/hive_registrar.g.dart';
 import 'package:hudu_interview_application/models/todo_model.dart';
