@@ -26,17 +26,21 @@ class TodoListNotifier extends _$TodoListNotifier {
   }
 
   void removeTodo(Todo todo) {
-    state.removeWhere((todoItem) => todoItem.id == todo.id);
-    Hive.box<Todo>('todosBox').delete(todo);
+    state = state.where((testTodo) => testTodo.id != todo.id).toList();
+    todo.delete();
   }
 
   void toggleTodoCompleted(Todo todo) {
     state = state.map((todoItem) {
       if (todoItem.id == todo.id) {
-        return todoItem.changeCompleted(todoItem);
+        // I would like to implement a cleaner approach but am having trouble with Hive claiming the todo isn't in the box
+        Todo updatedTodo = todo.changeCompleted(todo);
+        todo.delete();
+        Hive.box<Todo>('todosBox').add(updatedTodo);
+        return updatedTodo;
       }
       return todoItem;
     }).toList();
-    todo.changeCompleted(todo).save();
   }
+
 }
